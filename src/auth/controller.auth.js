@@ -29,7 +29,7 @@ class AuthController extends CustomRouter {
                     cartId: req.user.cart || null 
                 })
                 
-                res.cookie('authToken', accessToken, {maxAge: 60 * 60 * 1000, httpOnly: true}).json({
+                res.cookie('authToken', accessToken, {maxAge: 60 * 60 * 1000, httpOnly: true, secure: true, sameSite: "None"}).json({
                     status: 'success', payload: req.user, redirectUrl: '/api/viewsproducts'
                 })
         
