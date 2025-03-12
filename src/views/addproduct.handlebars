@@ -1,0 +1,54 @@
+<div class="navbar">
+    <div class="menu-button">
+        <span class="material-symbols-outlined" id="menu-toggle">menu</span>
+    </div>
+    <div class="title-products">
+        <h2>Products Store</h2>
+    </div>
+    <div>
+        <a href="/api/carts/{{cartId}}" class="cart-button">
+            <span class="material-symbols-outlined">shopping_cart</span>
+        </a>
+    </div>
+</div>
+
+{{!-- SIDEBAR --}}
+<div id="sidebar" class="sidebar">
+    <ul>
+        <li><a href="/api/viewsproducts">Home</a></li>
+        <li><a href="/api/chat">Chat</a></li>
+        <li><a href="/api/viewsproducts/addproduct">Add Product</a></li>
+        <li><a href="/api/viewsproducts/deleteproduct">Delete Product</a></li>
+        <li><a href="/api/profile">Profile</a></li>
+    </ul>
+    <div class="button-logout">
+        <a href="/api/auth/logout">Logout</a>
+    </div>
+</div>
+
+<div id="overlay" class="overlay"></div>
+
+<div class="form-container add-product-form">
+    <h2>Add Product</h2>
+    <form id="postForm">
+        <input id="title" type="text" placeholder="Title">
+        <input id="description" type="text" placeholder="Description">
+        <input id="code" type="text" placeholder="Code">
+        <input id="price" type="number" placeholder="Price">
+        <label id="status" class="form-label">Status:
+            <input type="radio" name="status" value="true"> Activo
+            <input type="radio" name="status" value="false"> Inactivo
+        </label>
+        <input id="stock" type="number" placeholder="Stock">
+        <input id="category" type="text" placeholder="Category">
+        <div id="thumbnails-container" class="thumbnails-container">
+            <input type="file" name="thumbnails" class="thumbnail-input">
+        </div>
+        <button type="submit" class="form-button">Create Product</button>
+    </form>
+</div>
+
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script type="module" src="/js/client.createProduct.js"></script>

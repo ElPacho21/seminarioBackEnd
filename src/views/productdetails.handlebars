@@ -1,0 +1,67 @@
+<div class="navbar">
+    <div class="menu-button">
+        <span class="material-symbols-outlined" id="menu-toggle">menu</span>
+    </div>
+    <div class="title-products">
+        <h2>Products Store</h2>
+    </div>
+    <div>
+        <a id="cart-btn" href="#" class="cart-button">
+            <span class="material-symbols-outlined">shopping_cart</span>
+        </a>
+    </div>
+</div>
+
+{{!-- SIDEBAR --}}
+<div id="sidebar" class="sidebar">
+    <ul>
+        <li><a href="/api/viewsproducts">Home</a></li>
+        <li><a href="/api/chat">Chat</a></li>
+        <li><a href="/api/viewsproducts/addproduct">Add Product</a></li>
+        <li><a href="/api/viewsproducts/deleteproduct">Delete Product</a></li>
+        <li><a href="/api/profile">Profile</a></li>
+    </ul>
+    <div class="button-logout">
+        <a href="/api/auth/logout">Logout</a>
+    </div>
+</div>
+
+<div id="overlay" class="overlay"></div>
+
+<div class="product-details-container">
+    <div class="product-image-gallery">
+        <div class="thumbnail-list">
+            {{#each product.thumbnails}}
+                <img src="/images/{{this}}" alt="Thumbnail" class="thumbnail-detail-product">
+            {{/each}}
+        </div>
+        <img src="/images/{{product.thumbnails.[0]}}" alt="{{product.title}}" id="main-product-image" class="product-image-detail-product">
+    </div>
+    <div class="product-details-content">
+        <h2>{{product.title}}</h2>
+        <p><strong>Precio:</strong> ${{product.price}}</p>
+        <p><strong>Categoría:</strong> {{product.category}}</p>
+        <p><strong>Descripción:</strong> {{product.description}}</p>
+        <p><strong>Código:</strong> {{product.code}}</p>
+        <p><strong>Stock disponible:</strong> {{product.stock}}</p>
+        <p><strong>ID del producto:</strong> {{product._id}}</p>
+        <p><strong>Cantidad:</strong></p>
+        <div class="quantity-selector">
+            <button id="decrease-quantity-btn" class="quantity-button">
+                <span class="material-symbols-outlined">remove</span>
+            </button>
+            <input type="number" id="quantity-input" class="quantity-input" value="1" min="1" max="{{product.stock}}" readonly>
+            <button id="increase-quantity-btn" class="quantity-button" data-stock="{{product.stock}}">
+                <span class="material-symbols-outlined">add</span>
+            </button>
+        </div>
+        <button id="add-to-cart-btn" data-product="{{product._id}}" class="add-to-cart-btn">
+            <span class="material-symbols-outlined">add_shopping_cart</span>
+        </button>
+    </div>
+</div>
+
+<script type="module" src="/js/client.productDetails.js"></script>
+
+{{!-- SweetAlert --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

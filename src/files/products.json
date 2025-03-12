@@ -1,0 +1,102 @@
+[
+    {
+      "title": "Laptop Gamer",
+      "description": "Laptop de alto rendimiento con tarjeta gráfica dedicada.",
+      "code": "LG123",
+      "price": 150000,
+      "status": true,
+      "stock": 25,
+      "category": "Tecnología",
+      "thumbnails": []
+    },
+    {
+      "title": "Smartphone",
+      "description": "Teléfono inteligente con pantalla AMOLED y cámara de 108MP.",
+      "code": "SM456",
+      "price": 85000,
+      "status": true,
+      "stock": 50,
+      "category": "Tecnología",
+      "thumbnails": []
+    },
+    {
+      "title": "Silla Ergonómica",
+      "description": "Silla de oficina con soporte lumbar y ajuste de altura.",
+      "code": "SE789",
+      "price": 35000,
+      "status": true,
+      "stock": 100,
+      "category": "Muebles",
+      "thumbnails": []
+    },
+    {
+      "title": "Mesa de Comedor",
+      "description": "Mesa de madera sólida para 6 personas.",
+      "code": "MC101",
+      "price": 60000,
+      "status": true,
+      "stock": 15,
+      "category": "Muebles",
+      "thumbnails": []
+    },
+    {
+      "title": "Audífonos Inalámbricos",
+      "description": "Audífonos Bluetooth con cancelación de ruido.",
+      "code": "AI202",
+      "price": 12000,
+      "status": true,
+      "stock": 80,
+      "category": "Tecnología",
+      "thumbnails": []
+    },
+    {
+      "title": "Televisor 4K",
+      "description": "Televisor inteligente con resolución UHD y HDR.",
+      "code": "TV303",
+      "price": 180000,
+      "status": true,
+      "stock": 30,
+      "category": "Electrodomésticos",
+      "thumbnails": []
+    },
+    {
+      "title": "Horno Microondas",
+      "description": "Horno microondas digital con múltiples funciones.",
+      "code": "HM404",
+      "price": 25000,
+      "status": true,
+      "stock": 40,
+      "category": "Electrodomésticos",
+      "thumbnails": []
+    },
+    {
+      "title": "Zapatillas Deportivas",
+      "description": "Zapatillas ligeras y cómodas para correr.",
+      "code": "ZD505",
+      "price": 7500,
+      "status": true,
+      "stock": 150,
+      "category": "Ropa y Calzado",
+      "thumbnails": []
+    },
+    {
+      "title": "Mochila Escolar",
+      "description": "Mochila resistente con múltiples compartimentos.",
+      "code": "ME606",
+      "price": 5500,
+      "status": true,
+      "stock": 200,
+      "category": "Accesorios",
+      "thumbnails": []
+    },
+    {
+      "title": "Reloj Inteligente",
+      "description": "Reloj con monitoreo de actividad física y notificaciones.",
+      "code": "RI707",
+      "price": 30000,
+      "status": true,
+      "stock": 60,
+      "category": "Tecnología",
+      "thumbnails": []
+    }
+]

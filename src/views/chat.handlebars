@@ -1,0 +1,45 @@
+<div class="navbar">
+    <div class="menu-button">
+        <span class="material-symbols-outlined" id="menu-toggle">menu</span>
+    </div>
+    <div class="title-products">
+        <h2>Chat</h2>
+    </div>
+    <div>
+        <a id="cart-btn" href="#" class="cart-button">
+            <span class="material-symbols-outlined">shopping_cart</span>
+        </a>
+    </div>
+</div>
+
+{{!-- SIDEBAR --}}
+<div id="sidebar" class="sidebar">
+    <ul>
+        <li><a href="/api/viewsproducts">Home</a></li>
+        <li><a href="/api/chat">Chat</a></li>
+        <li><a href="/api/viewsproducts/addproduct">Add Product</a></li>
+        <li><a href="/api/viewsproducts/deleteproduct">Delete Product</a></li>
+        <li><a href="/api/profile">Profile</a></li>
+    </ul>
+    <div class="button-logout">
+        <a href="/api/auth/logout">Logout</a>
+    </div>
+</div>
+
+<div id="overlay" class="overlay"></div>
+
+<div class="chat-container">
+    <label class="title-chat">Mensajes: </label>
+    <p id="messageLogs"></p>
+</div>
+
+<div class="input-container">
+    <input id="chatBox" placeholder="Tu mensaje">
+    <div id="sendButton" class="send-button">
+        <span class="material-symbols-outlined">send</span>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/client.chat.js"></script>
