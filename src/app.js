@@ -3,6 +3,7 @@ const handlebars = require('express-handlebars');
 const cookiepParser = require('cookie-parser')
 const MongoStore = require('connect-mongo')
 const passport = require('passport');
+const cors = require('cors');
 
 const { port } = require('./config/app.config')
 const { dbAdmin, dbPassword, dbHost, dbName } = require('./config/db.config')
@@ -14,6 +15,9 @@ const initializePassport = require('./config/passport.config');
 // Express server
 
 const app = express();
+
+// Middleware para permitir cross-origin
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
