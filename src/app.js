@@ -4,6 +4,7 @@ const cookiepParser = require('cookie-parser')
 const MongoStore = require('connect-mongo')
 const passport = require('passport');
 const cors = require('cors');
+const path = require("path");
 
 const { port } = require('./config/app.config')
 const { dbAdmin, dbPassword, dbHost, dbName } = require('./config/db.config')
@@ -21,7 +22,7 @@ app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname + '/public'))
+app.use("/public", express.static(path.join(__dirname, "public")));
 
 app.use((req, res, next) => {
     res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
