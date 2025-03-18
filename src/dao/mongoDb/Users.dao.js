@@ -61,7 +61,7 @@ class UserDao {
 
     async updateById(id, updatedUser){
         try {
-            return await User.findByIdAndUpdate(id, updatedUser)
+            return await User.findByIdAndUpdate(id, updatedUser, {new: true} )
         } catch(error){ 
             console.error('Error al actualizar usuario:', error.message)
             return null

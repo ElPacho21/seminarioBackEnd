@@ -1,5 +1,6 @@
 const UserDao = require('../dao/mongoDb/Users.dao');
 const CustomRouter = require('../classes/CustomRouter');
+const { generateToken } = require('../utils/jwt.util');
 
 const userDao = new UserDao();
 
@@ -33,7 +34,7 @@ class UsersController extends CustomRouter {
         
                 const user = await userDao.updateById(userId, userInfo);
                 if (!user) {
-                    return res.status(404).json({ status: 'error', message: 'User not found' });
+                    //return res.status(404).json({ status: 'error', message: 'User not found' });
                 }
         
                 const newToken = generateToken({ 
@@ -45,9 +46,9 @@ class UsersController extends CustomRouter {
                     role: user.role
                 });
         
-                res.cookie("authToken", newToken, { httpOnly: true, secure: true, sameSite: "strict" });
-        
-                res.status(200).json({ status: 'success', message: 'User updated successfully' });
+                res.cookie("authToken", newToken, {maxAge: 60 * 60 * 1000, httpOnly: true, secure: true, sameSite: "None"});
+                    
+                res.status(200).json({ status: 'success', message: user });
             } catch (error) {
                 console.error(error.message);
                 res.status(500).json({ status: 'error', message: 'Server Internal error' });
