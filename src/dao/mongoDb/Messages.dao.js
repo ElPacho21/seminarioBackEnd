@@ -25,7 +25,6 @@ class MessageDao {
     async insertOne(message){
         try {
             const newMessage = await Message.create(message)
-            console.log(newMessage)
             return newMessage
         } catch(error){
             console.error('Error al agregar mensaje:', error.message)

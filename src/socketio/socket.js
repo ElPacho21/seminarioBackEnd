@@ -8,7 +8,14 @@ const productManager = new ProductManager('products.json');
 
 let io;
 const socketio = (server) => {
-    io = new Server(server);
+    io = new Server(server, {
+        cors: {
+            origin: "http://localhost:3000",
+            methods: ['GET', 'POST', 'PUT', 'DELETE'],
+            allowedHeaders: ['Content-Type', 'Authorization'],
+            credentials: true
+        }
+    });
 
 io.on('connection', async (socket) => {
     console.log(`Cliente conectado ${socket.id}`)

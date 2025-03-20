@@ -87,7 +87,6 @@ class AuthController extends CustomRouter {
             }
             try {
                 const user = verifyToken(token);
-                console.log(user)
                 res.json(user);
             } catch (error) {
                 return res.status(401).json({ error: 'Invalid token' });
