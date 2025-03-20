@@ -2,7 +2,7 @@ const CustomRouter = require('../classes/CustomRouter');
 
 class AuthView extends CustomRouter {
     init() {
-        this.get('/profile', ['USER', 'ADMIN'], (req, res) => {
+        this.get('/profile', ['CLIENT', 'ADMIN'], (req, res) => {
             const user = req.user
             res.render('profile.handlebars', { user });
         })

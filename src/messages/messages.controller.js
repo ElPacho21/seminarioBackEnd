@@ -1,0 +1,29 @@
+const CustomRouter = require('../classes/CustomRouter');
+const MessageDao = require('../dao/mongoDb/Messages.dao');
+
+const messageDao = new MessageDao()
+
+class MessagesController extends CustomRouter {
+    init() {
+        this.get('/', ['ADMIN', 'CLIENT'], async (req, res) => {
+            try {
+                const messages = await messageDao.findAll()
+                res.status(200).json({ status:'success', messages });
+            } catch (error) {
+                console.error('Error al obtener los mensajes:', error.message);
+                res.status(500).json({ message: 'Error al obtener los mensajes' });
+            }
+        })
+        this.get('/user/:uid', ['CLIENT', 'ADMIN'], async (req, res) => {
+            try {
+                const messages = await messageDao.findAll()
+                res.status(200).json({ status:'success', messages });
+            } catch (error) {
+                console.error('Error al obtener los mensajes:', error.message);
+                res.status(500).json({ message: 'Error al obtener los mensajes' });
+            }
+        })
+    }
+}
+
+module.exports = MessagesController;

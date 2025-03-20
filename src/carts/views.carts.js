@@ -7,7 +7,7 @@ const productDao = new ProductDao();
 
 class CartsView extends CustomRouter {
     init() {
-        this.get('/:cid', ['USER', 'ADMIN'], async (req, res) => {
+        this.get('/:cid', ['CLIENT', 'ADMIN'], async (req, res) => {
             try {
                 const { cid } = req.params;
                 const cart = await cartDao.findById(cid);
@@ -32,7 +32,7 @@ class CartsView extends CustomRouter {
             }    
         })
         
-        this.get('/', ['USER', 'ADMIN'], async (req, res) => {
+        this.get('/', ['CLIENT', 'ADMIN'], async (req, res) => {
             try {
                 res.render('cart.handlebars', { message: 'El carrito está vacío' });
             } catch (error) {
@@ -41,7 +41,7 @@ class CartsView extends CustomRouter {
             }    
         })
         
-        this.get('/session/cart', ['USER', 'ADMIN'], (req, res) => {
+        this.get('/session/cart', ['CLIENT', 'ADMIN'], (req, res) => {
             if (!req.user.cartId) {
                 console.log('No hay carrito en la sesión')
                 return res.json({ cartId: null });

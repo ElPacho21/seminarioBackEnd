@@ -39,7 +39,7 @@ class AuthController extends CustomRouter {
             }
         })
         
-        this.get('/logout', ['USER', 'ADMIN'], (req, res) => {
+        this.get('/logout', ['CLIENT', 'ADMIN'], (req, res) => {
             try {
                 res.clearCookie('authToken')
                 res.redirect('/api/login')
@@ -80,7 +80,7 @@ class AuthController extends CustomRouter {
             }
         })
 
-        this.get('/current', ['USER', 'ADMIN'], (req, res) => {
+        this.get('/current', ['CLIENT', 'ADMIN'], (req, res) => {
             const token = req.cookies.authToken;
             if (!token) {
                 return res.status(401).render('unauthenticated.handlebars');
@@ -93,7 +93,7 @@ class AuthController extends CustomRouter {
             }
         });
 
-        this.get('/me', ['USER', 'ADMIN'], (req, res) => {
+        this.get('/me', ['CLIENT', 'ADMIN'], (req, res) => {
             const token = req.cookies.authToken;
             try {
                 return res.status(200).json(token)

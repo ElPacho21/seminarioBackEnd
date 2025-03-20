@@ -7,7 +7,7 @@ const productDao = new ProductDao()
 
 class ProductsView extends CustomRouter{
     init() {
-        this.get('/', ['USER', 'ADMIN'], async (req, res) => {
+        this.get('/', ['CLIENT', 'ADMIN'], async (req, res) => {
             try {
         
                 const { limit = 10, page = 1, sort, query, value } = req.query;
@@ -81,7 +81,7 @@ class ProductsView extends CustomRouter{
             }
         });
         
-        this.get('/products/:pid', ['USER', 'ADMIN'], async (req, res) => {
+        this.get('/products/:pid', ['CLIENT', 'ADMIN'], async (req, res) => {
             try {
                 const { pid } = req.params;
                 const productDetails = await productDao.findById(pid);

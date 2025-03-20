@@ -9,7 +9,7 @@ const productDao = new ProductDao();
 
 class ProductsController extends CustomRouter {
     init() {
-        this.get('/', ['USER', 'ADMIN'], async (req, res) => {
+        this.get('/', ['CLIENT', 'ADMIN'], async (req, res) => {
             try {
                 const { limit = 10, page = 1, sort, query, value } = req.query;
         
@@ -66,7 +66,7 @@ class ProductsController extends CustomRouter {
             }
         })
         
-        this.get('/:pid', ['USER', 'ADMIN'], async (req, res) => {
+        this.get('/:pid', ['CLIENT', 'ADMIN'], async (req, res) => {
             try {
         
                 const { pid } = req.params;

@@ -10,7 +10,7 @@ const userDao = new UserDao();
 
 class CartsController extends CustomRouter{
     init() {
-        this.get('/', ['USER', 'ADMIN'], async (req, res) => {
+        this.get('/', ['CLIENT', 'ADMIN'], async (req, res) => {
             try {
                 const carts = await cartDao.findAll();
         
@@ -21,7 +21,7 @@ class CartsController extends CustomRouter{
             }
         })
         
-        this.get('/:cid', ['USER', 'ADMIN'], async (req, res) => {
+        this.get('/:cid', ['CLIENT', 'ADMIN'], async (req, res) => {
             try {
         
                 const { cid } = req.params;
@@ -35,7 +35,7 @@ class CartsController extends CustomRouter{
             }
         })
         
-        this.post('/', ['USER', 'ADMIN'], async (req, res) =>{
+        this.post('/', ['CLIENT', 'ADMIN'], async (req, res) =>{
             try {
                 const data = req.body;
                 console.log(data)
@@ -63,7 +63,7 @@ class CartsController extends CustomRouter{
             }
         })
         
-        this.patch('/:cid/products/:pid', ['USER', 'ADMIN'], async (req, res) =>{
+        this.patch('/:cid/products/:pid', ['CLIENT', 'ADMIN'], async (req, res) =>{
             try {
                 const { cid, pid } = req.params;
                 const data = req.body;
@@ -83,7 +83,7 @@ class CartsController extends CustomRouter{
             }
         })
         
-        this.delete('/:cid/products/:pid', ['USER', 'ADMIN'], async (req, res) =>{
+        this.delete('/:cid/products/:pid', ['CLIENT', 'ADMIN'], async (req, res) =>{
             try {
                 const { cid, pid } = req.params;
         
@@ -97,7 +97,7 @@ class CartsController extends CustomRouter{
             }
         })
         
-        this.put('/:cid', ['USER', 'ADMIN'], async (req, res) => {
+        this.put('/:cid', ['CLIENT', 'ADMIN'], async (req, res) => {
             try {
                 const { cid } = req.params
                 const products = req.body
@@ -110,7 +110,7 @@ class CartsController extends CustomRouter{
             }
         })
         
-        this.delete('/:cid/products', ['USER', 'ADMIN'], async (req, res) => {
+        this.delete('/:cid/products', ['CLIENT', 'ADMIN'], async (req, res) => {
             try {
                 const { cid } = req.params
         
@@ -122,7 +122,7 @@ class CartsController extends CustomRouter{
             }
         })
         
-        this.delete('/:cid', ['USER', 'ADMIN'], async (req, res) => {
+        this.delete('/:cid', ['CLIENT', 'ADMIN'], async (req, res) => {
             try {
                 const { cid } = req.params
         

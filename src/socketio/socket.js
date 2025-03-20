@@ -61,7 +61,7 @@ io.on('connection', async (socket) => {
     socket.on('message', async (data) => {
         try {
             const { user, message } = data;
-            const newMessage = { email: user, message, date: new Date() };
+            const newMessage = { nickName: user, message, date: new Date() };
             await Message.insertOne(newMessage);
             const messages = await Message.findAll();
             io.emit('messageLogs', messages);

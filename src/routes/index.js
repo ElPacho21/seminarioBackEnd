@@ -3,6 +3,7 @@ const CartsController = require('../carts/controller.carts')
 const ChatController = require('../chat/controller.chat')
 const AuthController = require('../auth/controller.auth')
 const UsersController = require('../users/controller.users')
+const MessagesController = require('../messages/messages.controller')
 
 const ProductsView = require('../products/views.products')
 const CartsView = require('../carts/views.carts')
@@ -13,6 +14,7 @@ const cartsController = new CartsController()
 const chatController = new ChatController()
 const authController = new AuthController()
 const usersController = new UsersController()
+const messagesController = new MessagesController()
 
 const productsView = new ProductsView()
 const cartsView = new CartsView()
@@ -26,6 +28,7 @@ const router = (app) => {
     app.use('/api/chat', chatController.getRouter());
     app.use('/api/auth', authController.getRouter());
     app.use('/api/users', usersController.getRouter());
+    app.use('/api/messages', messagesController.getRouter());
 
     // VISTAS
     app.use('/api/viewsproducts', productsView.getRouter());

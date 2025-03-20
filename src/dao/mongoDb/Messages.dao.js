@@ -22,9 +22,9 @@ class MessageDao {
         }
     }
 
-    async insertOne(message){
+    async insertOne(message, cid){
         try {
-            const newMessage = await Message.create(message)
+            const newMessage = await Message.create({...message, chat: cid})
             return newMessage
         } catch(error){
             console.error('Error al agregar mensaje:', error.message)
@@ -47,6 +47,15 @@ class MessageDao {
         } catch(error){
             console.error(`Error al actualizar mensaje con id ${id}:`, error.message)
             throw new Error(`Error al actualizar mensaje con id ${id}:`, error.message)
+        }
+    }
+
+    async deleteById(id){
+        try {
+            return await Message.deleteById(id)
+        } catch(error){
+            console.error(`Error al eliminar mensaje con id ${id}:`, error.message)
+            throw new Error(`Error al eliminar mensaje con id ${id}:`, error.message)
         }
     }
 
