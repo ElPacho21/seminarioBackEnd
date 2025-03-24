@@ -7,10 +7,10 @@ const chatSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
     },
-    client: [{
+    client: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'user'
-    }]
+    }
 })
 
 const Chat = mongoose.model(collectionName, chatSchema)
