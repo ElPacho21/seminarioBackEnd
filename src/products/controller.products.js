@@ -11,17 +11,13 @@ class ProductsController extends CustomRouter {
     init() {
         this.get('/', ['CLIENT', 'ADMIN'], async (req, res) => {
             try {
-                const { limit = 10, page = 1, sort, query, value } = req.query;
+                const { limit = 10, page = 1, sort, category, search } = req.query;
         
                 const filter = {}
         
-                //Filtrar los productos según query y value
-                if(query === 'category' && value) {
-                    filter.category = value
-                }
-                if(query === 'status' && value !== undefined) {
-                    const status = value === 'true'
-                    filter.status = status
+                //Filtrar los productos según category
+                if(category) {
+                    filter.category = category
                 }
         
                 //Paginar los productos según limit y page
@@ -41,11 +37,11 @@ class ProductsController extends CustomRouter {
                 const baseUrl = `${req.protocol}://${req.get('host')}${req.originalUrl.split('?')[0]}`;
         
                 const prevLink = hasPrevPage
-                    ? `${baseUrl}?page=${prevPage}&limit=${limit}${sort ? `&sort=${sort}` : ''}${query ? `&query=${query}&value=${value}` : ''}`
+                    ? `${baseUrl}?page=${prevPage}&limit=${limit}${sort ? `&sort=${sort}` : ''}${category ? `&category=${category}&search=${search}` : ''}`
                     : null;
          
                 const nextLink = hasNextPage
-                    ? `${baseUrl}?page=${nextPage}&limit=${limit}${sort ? `&sort=${sort}` : ''}${query ? `&query=${query}&value=${value}` : ''}`
+                    ? `${baseUrl}?page=${nextPage}&limit=${limit}${sort ? `&sort=${sort}` : ''}${category ? `&category=${category}&search=${search}` : ''}`
                     : null;
         
                 return res.status(200).json({
@@ -58,7 +54,8 @@ class ProductsController extends CustomRouter {
                     hasNextPage,
                     totalDocs,
                     prevLink,
-                    nextLink
+                    nextLink,
+                    page
                 });
             } catch (error) {
                 console.log(error.message);
