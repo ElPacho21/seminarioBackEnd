@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 dotenv.config()
 
 module.exports = {
-    clientID: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: process.env.CALLBACK_URL
+    githubClientID: process.env.GITHUB_CLIENT_ID,
+    githubClientSecret: process.env.GITHUB_CLIENT_SECRET,
+    githubCallbackURL: process.env.GITHUB_CALLBACK_URL
 }
