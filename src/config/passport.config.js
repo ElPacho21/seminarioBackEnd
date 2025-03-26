@@ -32,7 +32,7 @@ const initializePassport = () => {
                     return done(null, false)
                 }
 
-                let role = 'user'
+                let role = 'client'
 
                 if(email === 'admin@gmail.com' && password === 'admin123') {
                     role = 'admin'
