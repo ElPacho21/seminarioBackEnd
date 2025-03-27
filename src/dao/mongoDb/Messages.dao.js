@@ -13,6 +13,15 @@ class MessageDao {
         }
     }
 
+    async findByChatId(cid) {
+        try {
+            return await Message.find({chat: cid})
+        } catch(error){
+            console.error('Error al obtener mensajes:', error.message)
+            throw new Error('Error al obtener mensajes:', error.message)
+        }
+    }
+
     async findById(id){
         try {
             return await Message.findOne({_id: id})
