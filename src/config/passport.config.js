@@ -4,16 +4,19 @@ const passport = require('passport')
 const local = require('passport-local')
 const github = require('passport-github2')
 const jwt = require('passport-jwt')
+const google = require('passport-google-oauth20')
 
 const UserDao = require('../dao/mongoDb/Users.dao')
 const { hashPassword, isValidPassword } = require('../utils/bcrypt.util')
-const { clientID, clientSecret, callbackURL } = require('./github.config')
+const { githubClientID, githubClientSecret, githubCallbackURL } = require('./github.config')
 const { privateKey } = require('./jwt.config')
 const cookieExtractor = require('../utils/cookieExtractor.util')
+const { clientID, clientSecret, callbackURL } = require('./google.config')
 
 const LocalStrategy = local.Strategy
 const GithubStrategy = github.Strategy
 const JWTStrategy = jwt.Strategy
+const GoogleStrategy = google.Strategy
 
 const userDao = new UserDao()
 
@@ -76,11 +79,11 @@ const initializePassport = () => {
         })
     )
 
-    passport.use('github',
+    /* passport.use('github',
         new GithubStrategy({
-            clientID,
-            clientSecret,
-            callbackURL
+            githubClientID,
+            githubClientSecret,
+            githubCallbackURL
         }, async (accessToken, refreshToken, profile, done) => {
             try {
                 console.log(profile)
@@ -90,8 +93,7 @@ const initializePassport = () => {
                     const userInfo = {
                         first_name: profile._json.name,
                         last_name: '',
-                        age: 18,
-                        role: 'user',
+                        role: 'client',
                         email: profile._json.email,
                         password: ''
                     }
@@ -103,7 +105,7 @@ const initializePassport = () => {
                 done(error.message)
             }
         })
-    )
+    ) */
 
     passport.use('jwt', new JWTStrategy({
         jwtFromRequest: jwt.ExtractJwt.fromExtractors([cookieExtractor]),
@@ -115,6 +117,33 @@ const initializePassport = () => {
             console.error(error)
         }
 
+    }))
+
+    passport.use('google', new GoogleStrategy({
+        clientID: clientID,
+        clientSecret: clientSecret,
+        callbackURL: callbackURL,
+        passReqToCallbackURL: true
+    }, async (req, accessToken, refreshToken, profile, done) => {
+        try {
+            const user = await userDao.findOne({ email: profile._json.email })
+
+            if(!user) {
+                const userInfo = {
+                    first_name: profile._json.given_name,
+                    last_name: profile._json.family_name,
+                    role: 'client',
+                    email: profile._json.email,
+                    password: ''
+                }
+                const newUser = await userDao.insertOne(userInfo)
+                done(null, newUser)
+            } else {
+                done(null, user)
+            }
+        } catch (error) {
+            done(error.message)
+        }
     }))
 
     passport.serializeUser((user, done) => {
