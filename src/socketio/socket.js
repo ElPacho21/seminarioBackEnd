@@ -2,7 +2,7 @@ const { Server } = require('socket.io');
 const ProductDao = require('../dao/mongoDb/Products.dao');
 const MessageDao = require('../dao/mongoDb/Messages.dao');
 const ProductManager = require('../dao/fileSystem/ProductManager');
-const CartDao = require('../dao/mongoDb/Carts.dao');
+const ConsultDao = require('../dao/mongoDb/Consult.dao');
 
 const productManager = new ProductManager('products.json');
 
@@ -21,6 +21,7 @@ io.on('connection', async (socket) => {
     console.log(`Cliente conectado ${socket.id}`)
     const Product = new ProductDao();
     const Message = new MessageDao();
+    const Consult = new ConsultDao();
 
     // Real Time Products
 
@@ -67,6 +68,28 @@ io.on('connection', async (socket) => {
             io.emit('messageLogs', messages);
         } catch (error) {
             console.error(error.message);
+        }
+    })
+
+    socket.on('newConsult', async (data) => {
+        try {
+            const { consult, pid } = data;
+            const newConsult = { question: consult, date: new Date(), product: pid };
+            await Consult.insertOne(newConsult);
+            const consults = await Consult.findByProduct(pid);
+            io.emit('consults', consults);
+        } catch (error) {
+            console.error(error.message);
+        }
+    })
+
+    socket.on("consultsLogs", async (data) => {
+        try {
+            const { pid } = data;
+            const consults = await Consult.findByProduct(pid);
+            socket.emit("consults", consults);
+        } catch (error) {
+            console.error("Error en consultsLogs:", error.message);
         }
     })
 
