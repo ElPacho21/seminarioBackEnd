@@ -7,10 +7,6 @@ const MessagesController = require('../messages/messages.controller')
 const GoogleController = require('../auth/controller.google')
 const ConsultController = require('../consult/controller.consult')
 
-const ProductsView = require('../products/views.products')
-const CartsView = require('../carts/views.carts')
-const AuthView = require('../auth/views.auth')
-
 const productsController = new ProductsController()
 const cartsController = new CartsController()
 const chatController = new ChatController()
@@ -19,12 +15,6 @@ const usersController = new UsersController()
 const messagesController = new MessagesController()
 const googleController = new GoogleController()
 const consultController = new ConsultController()
-
-const productsView = new ProductsView()
-const cartsView = new CartsView()
-const authView = new AuthView()
-
-
 
 const router = (app) => {
     app.use('/api/products', productsController.getRouter());
@@ -35,11 +25,6 @@ const router = (app) => {
     app.use('/api/messages', messagesController.getRouter());
     app.use('/', googleController.getRouter());
     app.use('/api/consults', consultController.getRouter());
-
-    // VISTAS
-    app.use('/api/viewsproducts', productsView.getRouter());
-    app.use('/api/viewscarts', cartsView.getRouter());
-    app.use('/api', authView.getRouter());
 
     app.use('*', (req, res) => {
         res.status(404).send({ message: 'Ooops Page not found' })

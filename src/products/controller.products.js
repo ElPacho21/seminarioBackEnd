@@ -167,6 +167,19 @@ class ProductsController extends CustomRouter {
                 res.status(500).json({status: 'error', payload: 'Error al eliminar producto' });
             }
         })
+
+         // Endpoint para cargar imagenes, se llama con el fetch dentro de createProduct
+         this.post('/upload', ['PUBLIC'], uploader.array('thumbnails', 10), (req, res) => {
+            try {
+                console.log('Archivos recibidos:', req.files);
+        
+                const filenames = req.files.map(file => file.filename);
+                res.json({ filenames });
+            } catch (err) {
+                console.error('Error al subir archivos:', err);
+                res.status(500).json({ error: 'Error al subir archivos' });
+            }
+        });
         
         this.get('/:pid/loadItems', ['ADMIN'], async (req, res) => {
             try {
