@@ -93,6 +93,17 @@ io.on('connection', async (socket) => {
         }
     })
 
+    socket.on("answerQuery", async (data) => {
+        try {
+            const { pid, cid, answer } = data;
+            await Consult.answerConsult(cid, answer)
+            const consults = await Consult.findByProduct(pid);
+            socket.emit("consults", consults);
+        } catch (error) {
+            console.error("Error en consultsLogs:", error.message);
+        }
+    })    
+
     socket.on('disconnect', () => {
         console.log(`Cliente desconectado ${socket.id}`)
     })
