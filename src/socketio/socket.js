@@ -73,6 +73,7 @@ io.on('connection', async (socket) => {
 
     socket.on('newConsult', async (data) => {
         try {
+            console.log("New consult: ", data)
             const { consult, pid } = data;
             const newConsult = { question: consult, date: new Date(), product: pid };
             await Consult.insertOne(newConsult);
@@ -86,7 +87,9 @@ io.on('connection', async (socket) => {
     socket.on("consultsLogs", async (data) => {
         try {
             const { pid } = data;
+            console.log("ID:", pid)
             const consults = await Consult.findByProduct(pid);
+            console.log(consults)
             socket.emit("consults", consults);
         } catch (error) {
             console.error("Error en consultsLogs:", error.message);
