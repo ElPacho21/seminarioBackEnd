@@ -1,13 +1,11 @@
 const express = require('express');
-const handlebars = require('express-handlebars');
 const cookiepParser = require('cookie-parser')
-const MongoStore = require('connect-mongo')
 const passport = require('passport');
 const cors = require('cors');
 const path = require("path");
+const morgan = require('morgan')
 
 const { port } = require('./config/app.config')
-const { dbAdmin, dbPassword, dbHost, dbName } = require('./config/db.config')
 const router = require('./routes');
 const { socketio } = require('./socketio/socket');
 const mongoConnect = require('../db');
@@ -16,6 +14,9 @@ const initializePassport = require('./config/passport.config');
 // Express server
 
 const app = express();
+
+// Morgan
+app.use(morgan('dev'))
 
 // Middleware para permitir cross-origin
 app.use(cors({ 
@@ -43,24 +44,6 @@ app.use(cookiepParser()) // Parse cookies from request headers
 // Passport
 initializePassport()
 app.use(passport.initialize())
-
-// Handlebars
-
-// * Helpers 
-const hbs = handlebars.create({
-    extname: '.handlebars',
-    defaultLayout: 'main',
-    helpers: {
-        multiply: (a, b) => a * b,
-        add: (a, b) => a + b,
-        reduce: (array, initialValue) => 
-            array.reduce((acc, item) => acc + item.price * item.quantity, initialValue)
-    },
-});
-
-app.engine('handlebars', hbs.engine);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'handlebars')
 
 // Base de Datos
 mongoConnect();

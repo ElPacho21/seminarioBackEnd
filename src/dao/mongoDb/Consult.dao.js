@@ -38,6 +38,16 @@ class ConsultDao {
             throw new Error('Error al obtener consultas por producto:', error.message)
         }
     }
+
+    async answerConsult(cid, answer){
+        try {
+            const consult = await Consult.findByIdAndUpdate(cid, {answer})
+            return consult
+        } catch (error) {
+            console.error('Error al responder consulta:', error.message)
+            throw new Error('Error al responder consulta:', error.message)
+        }
+    }
 }
 
 module.exports = ConsultDao

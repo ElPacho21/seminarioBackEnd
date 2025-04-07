@@ -83,7 +83,7 @@ class AuthController extends CustomRouter {
         this.get('/current', ['CLIENT', 'ADMIN'], (req, res) => {
             const token = req.cookies.authToken;
             if (!token) {
-                return res.status(401).render('unauthenticated.handlebars');
+                return res.status(401).json({ error: 'Invalid token' });
             }
             try {
                 const user = verifyToken(token);
