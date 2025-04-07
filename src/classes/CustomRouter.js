@@ -61,12 +61,12 @@ class CustomRouter {
             
             const token = req.cookies.authToken; 
 
-            if(!token) return res.status(401).render('unauthenticated.handlebars')
+            if(!token) return res.status(401).json({ error: 'Not authorized' })
             
             const user = verifyToken(token)
 
             /* if(!policies.includes(user.role.toUpperCase())) return res.status(403).json({ error: 'Not authorized' }) */
-            if(!policies.includes(user.role.toUpperCase())) return res.status(403).render('unauthorized.handlebars')
+            if(!policies.includes(user.role.toUpperCase())) return res.status(403).json({error: 'Not authenticated'})
             
             req.user = user
             next()

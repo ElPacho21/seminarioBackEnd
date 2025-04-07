@@ -3,6 +3,7 @@ const cookiepParser = require('cookie-parser')
 const passport = require('passport');
 const cors = require('cors');
 const path = require("path");
+const morgan = require('morgan')
 
 const { port } = require('./config/app.config')
 const router = require('./routes');
@@ -13,6 +14,9 @@ const initializePassport = require('./config/passport.config');
 // Express server
 
 const app = express();
+
+// Morgan
+app.use(morgan('dev'))
 
 // Middleware para permitir cross-origin
 app.use(cors({ 
