@@ -2,6 +2,7 @@ const Stripe = require('stripe');
 
 const CustomRouter = require('../classes/CustomRouter');
 const { stripeSecretKey } = require('../config/stripe.config');
+const { frontEndUrl } = require('../config/app.config');
 
 const stripe = new Stripe(stripeSecretKey)
 
@@ -29,8 +30,8 @@ class OrdersController extends CustomRouter{
                 const session = await stripe.checkout.sessions.create({
                     line_items: productsStripe,
                     mode: 'payment',
-                    success_url: 'http://localhost:3000/payment/success',
-                    cancel_url: 'http://localhost:3000/products',
+                    success_url: `${frontEndUrl}/payment/success`,
+                    cancel_url: `${frontEndUrl}/products`,
                 });
         
                 console.log(session);
