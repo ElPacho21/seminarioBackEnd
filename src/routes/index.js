@@ -7,6 +7,7 @@ const MessagesController = require('../messages/messages.controller')
 const GoogleController = require('../auth/controller.google')
 const ConsultController = require('../consult/controller.consult')
 const CheckoutController = require('../checkout/controller.checkout')
+const ReceiptsController = require('../receipts/controller.receipts')
 
 const productsController = new ProductsController()
 const cartsController = new CartsController()
@@ -17,6 +18,7 @@ const messagesController = new MessagesController()
 const googleController = new GoogleController()
 const consultController = new ConsultController()
 const checkoutController = new CheckoutController()
+const receiptsController = new ReceiptsController()
 
 const router = (app) => {
     app.use('/api/products', productsController.getRouter());
@@ -28,6 +30,7 @@ const router = (app) => {
     app.use('/', googleController.getRouter());
     app.use('/api/consults', consultController.getRouter());
     app.use('/api/checkout', checkoutController.getRouter());
+    app.use('/api/receipts', receiptsController.getRouter());
 
     app.use('*', (req, res) => {
         res.status(404).send({ message: 'Ooops Page not found' })
