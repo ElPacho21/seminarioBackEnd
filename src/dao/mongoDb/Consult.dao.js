@@ -17,7 +17,9 @@ class ConsultDao {
 
     async findByProduct(pid){
         try {
-            return await Consult.find({product: pid}).sort({date: -1})
+            const consults = await Consult.find({product: pid}).sort({date: -1})
+            console.log("consults dao: ", consults)
+            return consults
         } catch(error){
             console.error('Error al obtener consultas por producto:', error.message)
             throw new Error('Error al obtener consultas por producto:', error.message)
@@ -26,7 +28,11 @@ class ConsultDao {
 
     async findFirstConsults(pid){
         try {
-            return await Consult.find({product: pid}).sort({date: -1}).limit(2)
+            console.log("Pid: ", pid)
+            const consults = await Consult.find({product: pid})
+            console.log("consultas first: ", consults)
+            return consults
+
         } catch(error){
             console.error('Error al obtener consultas por producto:', error.message)
             throw new Error('Error al obtener consultas por producto:', error.message)
