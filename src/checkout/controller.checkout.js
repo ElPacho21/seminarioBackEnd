@@ -64,6 +64,11 @@ class CheckoutController extends CustomRouter{
                 res.status(500).json({ status: 'error', payload: 'Error al realizar el pago' });
             }    
         });
+
+        this.post('/webhook', ['PUBLIC'], async (req, res) => {
+            const event = request.body;
+            console.log("event: ", event)
+        });
     }
 }
 
