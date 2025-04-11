@@ -1,11 +1,16 @@
+const { Stripe } = require('stripe');
+
 const CustomRouter = require('../classes/CustomRouter');
 const ProductManager = require('../dao/fileSystem/ProductManager');
 const ProductDao = require('../dao/mongoDb/Products.dao')
 const { getIo } = require('../socketio/socket');
 const uploader = require('../utils/multer.util');
+const { stripeSecretKey } = require('../config/stripe.config');
 
 const productManager = new ProductManager('products.json');
 const productDao = new ProductDao();
+
+const stripe = new Stripe(stripeSecretKey)
 
 class ProductsController extends CustomRouter {
     init() {
@@ -94,10 +99,24 @@ class ProductsController extends CustomRouter {
                     thumbnails
                 }
         
-                await productDao.insertOne(productInfo);
-                console.log('Producto por agregar: ', productInfo)
+                const productCreated = await productDao.insertOne(productInfo);
+
+                const stripeProduct = await stripe.products.create({
+                    name: title,
+                    description,
+                    metadata: {
+                        internalId: productCreated._id.toString()
+                    },
+                    images: thumbnails.map(filename => `${config.urlHost}/public/images/${filename}`)
+                });
+                
+                const stripePrice = await stripe.prices.create({
+                    product: stripeProduct.id,
+                    unit_amount: Math.round(price * 100),
+                    currency: 'ars'
+                });
         
-                const products = await product.findAll();
+                const products = await productDao.findAll();
         
                 const io = getIo();
                 io.emit('updateProducts', products);

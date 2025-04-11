@@ -3,6 +3,7 @@ const ProductDao = require('../dao/mongoDb/Products.dao');
 const MessageDao = require('../dao/mongoDb/Messages.dao');
 const ProductManager = require('../dao/fileSystem/ProductManager');
 const ConsultDao = require('../dao/mongoDb/Consult.dao');
+const { frontEndUrl } = require('../config/app.config');
 
 const productManager = new ProductManager('products.json');
 
@@ -10,7 +11,7 @@ let io;
 const socketio = (server) => {
     io = new Server(server, {
         cors: {
-            origin: "http://localhost:3000",
+            origin: `${frontEndUrl}`,
             methods: ['GET', 'POST', 'PUT', 'DELETE'],
             allowedHeaders: ['Content-Type', 'Authorization'],
             credentials: true
