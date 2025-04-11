@@ -17,6 +17,8 @@ class AuthController extends CustomRouter {
         
         this.post('/login', ['PUBLIC'], passportCall('login', { failureRedirect: '/api/failLogin' }), async (req, res) => {
             try {
+
+                console.log("/login")
                 if(!req.user) return res.status(401).json({ status: 'success', redirectUrl: '/api/failLogin' })
         
                 const accessToken = generateToken({ 

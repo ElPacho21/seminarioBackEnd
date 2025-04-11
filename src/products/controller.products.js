@@ -6,6 +6,7 @@ const ProductDao = require('../dao/mongoDb/Products.dao')
 const { getIo } = require('../socketio/socket');
 const uploader = require('../utils/multer.util');
 const { stripeSecretKey } = require('../config/stripe.config');
+const { config } = require('dotenv');
 
 const productManager = new ProductManager('products.json');
 const productDao = new ProductDao();
@@ -87,6 +88,8 @@ class ProductsController extends CustomRouter {
                 const {title, description, code, price, status, stock, category} = req.body;
         
                 const thumbnails = req.files ? req.files.map(f => f.filename) : [];
+
+
         
                 const productInfo = {
                     title,
@@ -116,10 +119,9 @@ class ProductsController extends CustomRouter {
                     currency: 'ars'
                 });
         
-                const products = await productDao.findAll();
         
                 const io = getIo();
-                io.emit('updateProducts', products);
+                io.emit('updateProducts');
         
                 res.status(201).json({status: 'success', payload: 'Producto agregado con éxito' });
         
@@ -171,13 +173,28 @@ class ProductsController extends CustomRouter {
                 const data = await productDao.findById(pid);
         
                 productManager.deleteImages(data.thumbnails)
+
+                  // Buscar el producto en Stripe por metadata.internalId
+                const stripeProducts = await stripe.products.list({
+                    limit: 1,
+                    expand: ['data'],
+                    active: true,
+                    // importante: buscás por metadata
+                });
+
+                const stripeProduct = stripeProducts.data.find(p => p.metadata?.internalId === pid);
+
+                if (stripeProduct) {
+                    // Desactivar el producto en Stripe (no se puede eliminar, pero se puede archivar)
+                    await stripe.products.update(stripeProduct.id, {
+                        active: false
+                    });
+                }
         
                 await productDao.deleteById(pid);
-        
-                const products = await productDao.findAll();
-        
+    
                 const io = getIo();
-                io.emit('updateProducts', products);
+                io.emit('updateProducts');
         
                 res.status(200).json({status: 'success', payload: 'Producto eliminado con éxito' });
         
