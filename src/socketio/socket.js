@@ -1,11 +1,8 @@
 const { Server } = require('socket.io');
-const ProductDao = require('../dao/mongoDb/Products.dao');
 const MessageDao = require('../dao/mongoDb/Messages.dao');
-const ProductManager = require('../dao/fileSystem/ProductManager');
 const ConsultDao = require('../dao/mongoDb/Consult.dao');
 const { frontEndUrl } = require('../config/app.config');
 
-const productManager = new ProductManager('products.json');
 
 let io;
 const socketio = (server) => {
@@ -20,33 +17,8 @@ const socketio = (server) => {
 
 io.on('connection', async (socket) => {
     console.log(`Cliente conectado ${socket.id}`)
-    const Product = new ProductDao();
     const Message = new MessageDao();
     const Consult = new ConsultDao();
-
-    // Real Time Products
-
-    socket.on('createProduct', async (product) => {
-        try {
-            await Product.insertOne(product);
-            const products = await Product.findAll();
-            io.emit('updateProducts', products);
-        } catch (error) {
-            console.error(error.message);  
-        }
-    })
-
-    socket.on('deleteProduct', async (pid) => {
-        try {
-            const product = await Product.findById(pid);
-            productManager.deleteImages(product.thumbnails);
-            await Product.deleteById(pid);
-            const products = await Product.findAll();
-            io.emit('updateProducts', products);
-        } catch (error) {
-            console.error(error.message);
-        }
-    })
 
     // Chat messages
 
