@@ -8,10 +8,11 @@ const google = require('passport-google-oauth20')
 
 const UserDao = require('../dao/mongoDb/Users.dao')
 const { hashPassword, isValidPassword } = require('../utils/bcrypt.util')
-const { githubClientID, githubClientSecret, githubCallbackURL } = require('./github.config')
+const { githubClientID, githubClientSecret } = require('./github.config')
+const { backEndUrl } = require('./app.config')
 const { privateKey } = require('./jwt.config')
 const cookieExtractor = require('../utils/cookieExtractor.util')
-const { clientID, clientSecret, callbackURL } = require('./google.config')
+const { clientID, clientSecret } = require('./google.config')
 
 const LocalStrategy = local.Strategy
 const GithubStrategy = github.Strategy
@@ -83,7 +84,7 @@ const initializePassport = () => {
         new GithubStrategy({
             githubClientID,
             githubClientSecret,
-            githubCallbackURL
+            githubCallbackURL: `${backEndUrl}/api/auth/githubCallback`
         }, async (accessToken, refreshToken, profile, done) => {
             try {
                 console.log(profile)
@@ -122,7 +123,7 @@ const initializePassport = () => {
     passport.use('google', new GoogleStrategy({
         clientID: clientID,
         clientSecret: clientSecret,
-        callbackURL: callbackURL,
+        callbackURL: `${backEndUrl}/googleCallback`,
         passReqToCallbackURL: true
     }, async (req, accessToken, refreshToken, profile, done) => {
         try {

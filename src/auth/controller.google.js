@@ -1,4 +1,5 @@
 const CustomRouter = require('../classes/CustomRouter');
+const { frontEndUrl } = require('../config/app.config');
 const { generateToken } = require('../utils/jwt.util');
 const passportCall = require('../utils/passportCall.util');
 
@@ -30,7 +31,7 @@ class GoogleController extends CustomRouter {
                 httpOnly: true
             });
         
-            res.redirect('http://localhost:3000/products');
+            res.redirect(`${frontEndUrl}/products`);
         });
         
     }

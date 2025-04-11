@@ -5,7 +5,7 @@ const cors = require('cors');
 const path = require("path");
 const morgan = require('morgan')
 
-const { port } = require('./config/app.config')
+const { port, frontEndUrl } = require('./config/app.config')
 const router = require('./routes');
 const { socketio } = require('./socketio/socket');
 const mongoConnect = require('../db');
@@ -20,10 +20,12 @@ app.use(morgan('dev'))
 
 // Middleware para permitir cross-origin
 app.use(cors({ 
-    origin: 'http://localhost:3000',
+    origin: `${frontEndUrl}`,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true 
 }));
+
+app.use("/api/checkout/webhook", express.raw({ type: "application/json" }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
