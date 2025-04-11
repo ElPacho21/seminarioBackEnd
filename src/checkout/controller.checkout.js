@@ -76,8 +76,8 @@ class CheckoutController extends CustomRouter{
                         total += mount;
                     
                         const stripeProduct = await stripe.products.retrieve(item.price.product);
-                    
-                        const productId = mongoose.Types.ObjectId.createFromHexString(stripeProduct.metadata.productId);
+
+                        const productId = new mongoose.Types.ObjectId(stripeProduct.metadata.internalId);
                     
                         await receiptDetailDao.insertReceiptDetail({
                             quantity: item.quantity,

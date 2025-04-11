@@ -89,8 +89,6 @@ class ProductsController extends CustomRouter {
         
                 const thumbnails = req.files ? req.files.map(f => f.filename) : [];
 
-
-        
                 const productInfo = {
                     title,
                     description,
