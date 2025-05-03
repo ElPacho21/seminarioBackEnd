@@ -21,7 +21,7 @@ app.use(morgan('dev'))
 // Middleware para permitir cross-origin
 app.use(cors({ 
     origin: `${frontEndUrl}`,
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PATCH', 'PUT', 'DELETE'],
     credentials: true 
 }));
 

@@ -193,7 +193,7 @@ class AuthController extends CustomRouter {
         res.status(200).json({ message: "Email send" });
       } catch (error) {
         console.error(error.message);
-        res.status(404).json({ error: "Error al recuperar contraseña" });
+        res.status(500).json({ error: "Error al recuperar contraseña" });
       }
     });
 
@@ -206,13 +206,13 @@ class AuthController extends CustomRouter {
         try {
           payload = verifyToken(token);
         } catch (err) {
-          return res.status(400).json({ message: "Token inválido o expirado" });
+          return res.status(401).json({ message: "Token inválido o expirado" });
         }
 
         const user = await userDao.findOne({ _id: payload.id, resetToken: token });
 
         if (!user || user.resetTokenExpires < Date.now()) {
-          return res.status(400).json({ message: "Token expirado" });
+          return res.status(401).json({ message: "Token expirado" });
         }
 
         const newPassword = hashPassword(password);
@@ -224,7 +224,7 @@ class AuthController extends CustomRouter {
         
         res.json({ message: "Password updated" });
       } catch (error) {
-        res.json({ error: error.message });
+        res.status(500).json({ error: error.message });
       }
     });
   }
