@@ -13,7 +13,13 @@ const verifyToken = (token) => {
     return jwt.verify(token, PRIVATE_KEY)
 }
 
+const generateTokenForPassword = (id) => {
+    const token = jwt.sign({id}, PRIVATE_KEY, {expiresIn: 1800000})
+    return token;
+}
+
 module.exports = { 
     generateToken,
-    verifyToken
+    verifyToken,
+    generateTokenForPassword
 }

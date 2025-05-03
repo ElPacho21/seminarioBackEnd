@@ -22,7 +22,9 @@ const userSchema = new mongoose.Schema({
     cart: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'cart'
-    }
+    },
+    resetToken: String,
+    resetTokenExpires: Date
 })
 
 const User = mongoose.model(collectionName, userSchema)
