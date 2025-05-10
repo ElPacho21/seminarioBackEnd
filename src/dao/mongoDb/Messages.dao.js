@@ -31,9 +31,10 @@ class MessageDao {
         }
     }
 
-    async insertOne(message, cid){
+    async insertOne(message){
         try {
-            const newMessage = await Message.create({...message, chat: cid})
+            console.log(message)
+            const newMessage = await Message.create({...message})
             return newMessage
         } catch(error){
             console.error('Error al agregar mensaje:', error.message)

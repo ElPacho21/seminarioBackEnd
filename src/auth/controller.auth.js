@@ -60,7 +60,7 @@ class AuthController extends CustomRouter {
             nickName: req.user.nickName,
             cartId: req.user.cart || null,
           });
-
+          console.log("User id: ", req.user._id)
           res
             .cookie("authToken", accessToken, {
               maxAge: 60 * 60 * 1000,

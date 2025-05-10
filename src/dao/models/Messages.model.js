@@ -3,15 +3,23 @@ const mongoose = require('mongoose')
 const collectionName = 'message'
 
 const messageSchema = new mongoose.Schema({
-    message: String,
-    date: Date,
+    message: {
+        type: String,
+        required: true,
+    },
+    date: {
+        type: Date,
+        required: true,
+    },
     chat: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'chat'
+        ref: 'chat',
+        required: true,
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
+        ref: 'user',
+        required: true,
     }
 });
 
