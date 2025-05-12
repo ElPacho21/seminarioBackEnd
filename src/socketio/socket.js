@@ -38,7 +38,11 @@ const socketio = (server) => {
     };
 
     const getClientMappedChats = async (userID) => {
-      const chats = await Chat.findByUserId(userID);
+      let chats = await Chat.findByUserId(userID);
+      if(!chats.length){
+        await Chat.insertOne({ client: userID });
+        chats = await Chat.findByUserId(userID);
+      }
       const mappedChats = await Promise.all(
         chats.map(async (chat) => {
           const messages = await Message.findByChatId(chat._id);
