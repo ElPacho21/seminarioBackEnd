@@ -10,7 +10,10 @@ const productSchema = new mongoose.Schema({
     price: Number,
     status: Boolean,
     stock: Number,
-    category: String,
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'category'
+    },
     thumbnails: [String]
 })
 
