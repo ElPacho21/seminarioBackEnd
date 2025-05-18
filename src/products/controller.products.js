@@ -5,6 +5,7 @@ const ProductManager = require('../dao/fileSystem/ProductManager');
 const ProductDao = require('../dao/mongoDb/Products.dao')
 const { getIo } = require('../socketio/socket');
 const uploader = require('../utils/multer.util');
+const optimizeImages = require('../utils/sharp.util');
 const { stripeSecretKey } = require('../config/stripe.config');
 const { config } = require('dotenv');
 
@@ -87,7 +88,8 @@ class ProductsController extends CustomRouter {
             try {
                 const {title, description, code, price, status, stock, category} = req.body;
         
-                const thumbnails = req.files ? req.files.map(f => f.filename) : [];
+                const thumbnails = req.files.length? await optimizeImages(req.files): [];
+                /* const thumbnails = req.files ? req.files.map(f => f.filename) : []; */
 
                 const productInfo = {
                     title,
