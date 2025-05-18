@@ -19,11 +19,30 @@ async function deleteFileWithRetries(filePath, retries = 5, delayMs = 200) {
     throw new Error(`No se pudo borrar el archivo después de varios intentos: ${filePath}`);
 }
 
+async function cropToSquare(buffer) {
+    const image = sharp(buffer);
+    const metadata = await image.metadata();
+
+    const size = Math.min(metadata.width, metadata.height);
+    const left = Math.floor((metadata.width - size) / 2);
+    const top = Math.floor((metadata.height - size) / 2);
+
+    return await image.extract({
+        width: size,
+        height: size,
+        left,
+        top
+    }).toBuffer();
+}
+
 async function optimizeImages(files, options = {}) {
+    if (!Array.isArray(files)) files = [files];
+
     const {
         quality = 80,
         keepOriginal = false,
-        outputFolder = null
+        outputFolder = null,
+        forceSquare = true
     } = options;
 
     const optimizedFilenames = [];
@@ -35,31 +54,24 @@ async function optimizeImages(files, options = {}) {
         const finalOutputFolder = outputFolder || path.dirname(inputPath);
         const outputPath = path.join(finalOutputFolder, outputFilename);
 
-        // Usamos stream explícito para asegurarnos que todo se libere
-        const readStream = fs.createReadStream(inputPath);
-        const transform = sharp().webp({ quality });
-        const writeStream = fs.createWriteStream(outputPath);
+        try {
+            const inputBuffer = await fsPromises.readFile(inputPath);
 
-        await new Promise((resolve, reject) => {
-            readStream
-                .pipe(transform)
-                .pipe(writeStream)
-                .on('finish', resolve)
-                .on('error', reject);
-        });
+            const bufferToOptimize = forceSquare? await cropToSquare(inputBuffer): inputBuffer;
 
-        if (!keepOriginal) {
-            try {
+            await sharp(bufferToOptimize).webp({ quality }).toFile(outputPath);
+
+            if (!keepOriginal) {
                 await deleteFileWithRetries(inputPath);
-            } catch (err) {
-                console.error(`Error al borrar el archivo original ${inputPath}:`, err.message);
             }
-        }
 
-        optimizedFilenames.push(outputFilename);
+            optimizedFilenames.push(outputFilename);
+        } catch (err) {
+            console.error(`Error procesando ${inputPath}:`, err.message);
+        }
     }
 
-    return optimizedFilenames;
+    return optimizedFilenames.length === 1 ? optimizedFilenames[0] : optimizedFilenames;
 }
 
 module.exports = optimizeImages;

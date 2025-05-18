@@ -4,13 +4,15 @@ const CustomRouter = require('../classes/CustomRouter');
 const ProductManager = require('../dao/fileSystem/ProductManager');
 const ProductDao = require('../dao/mongoDb/Products.dao')
 const { getIo } = require('../socketio/socket');
-const uploader = require('../utils/multer.util');
+const createUploader = require('../utils/multer.util');
 const optimizeImages = require('../utils/sharp.util');
 const { stripeSecretKey } = require('../config/stripe.config');
 const { config } = require('dotenv');
 
 const productManager = new ProductManager('products.json');
 const productDao = new ProductDao();
+
+const uploaderProducts = createUploader('products');
 
 const stripe = new Stripe(stripeSecretKey)
 
@@ -84,11 +86,11 @@ class ProductsController extends CustomRouter {
             }
         })
         
-        this.post('/', ['ADMIN'], uploader.array('thumbnails'), async (req, res) =>{
+        this.post('/', ['ADMIN'], uploaderProducts.array('thumbnails'), async (req, res) =>{
             try {
                 const {title, description, code, price, status, stock, category} = req.body;
         
-                const thumbnails = req.files.length? await optimizeImages(req.files): [];
+                const thumbnails = req.files.length? await optimizeImages(req.files, { forceSquare: false }): [];
                 /* const thumbnails = req.files ? req.files.map(f => f.filename) : []; */
 
                 const productInfo = {
@@ -127,11 +129,20 @@ class ProductsController extends CustomRouter {
         
             } catch (error) {
                 console.log(error.message);
+                
+                if (error.code === 'LIMIT_FILE_SIZE') {
+                   return res.status(400).json({ error: 'El archivo es demasiado grande. Máximo 2 MB.' });
+                }
+
+                if (error.message.includes('Tipo de archivo no permitido')) {
+                    return res.status(400).json({ status: 'error', message: error.message });
+                }
+
                 res.status(500).json({status: 'error', payload: 'Error al agregar el producto' });
             }
         })
         
-        this.patch('/:pid', ['ADMIN'], uploader.array('thumbnails'), async (req, res) =>{
+        this.patch('/:pid', ['ADMIN'], uploaderProducts.array('thumbnails'), async (req, res) =>{
             try {
         
                 const { pid } = req.params;
@@ -161,6 +172,15 @@ class ProductsController extends CustomRouter {
         
             } catch (error) {
                 console.log(error.message);
+
+                if (error.code === 'LIMIT_FILE_SIZE') {
+                   return res.status(400).json({ error: 'El archivo es demasiado grande. Máximo 2 MB.' });
+                }
+
+                if (error.message.includes('Tipo de archivo no permitido')) {
+                    return res.status(400).json({ status: 'error', message: error.message });
+                }
+
                 res.status(500).json({status: 'error', payload: 'Error al actualizar producto' });
             }
         })

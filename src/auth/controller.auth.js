@@ -59,6 +59,8 @@ class AuthController extends CustomRouter {
             role: req.user.role,
             nickName: req.user.nickName,
             cartId: req.user.cart || null,
+            avatar: req.user.avatar,
+            country: req.user.country
           });
           console.log("User id: ", req.user._id)
           res
@@ -70,8 +72,7 @@ class AuthController extends CustomRouter {
             })
             .json({
               status: "success",
-              payload: req.user,
-              redirectUrl: "/api/viewsproducts",
+              payload: req.user
             });
         } catch (error) {
           console.error(error.message);
@@ -124,7 +125,7 @@ class AuthController extends CustomRouter {
       ["PUBLIC"],
       passportCall("github", { failureRedirect: "/api/login" }),
       async (req, res) => {
-        res.redirect("/api/viewsproducts");
+        res.json({ status: "success", payload: req.user });
       }
     );
 

@@ -24,7 +24,15 @@ const userSchema = new mongoose.Schema({
         ref: 'cart'
     },
     resetToken: String,
-    resetTokenExpires: Date
+    resetTokenExpires: Date,
+    avatar: {
+        type: String,
+        default: 'default-avatar.webp'
+    },
+    country: {
+        type: String,
+        default: 'Argentina'
+    }
 })
 
 const User = mongoose.model(collectionName, userSchema)

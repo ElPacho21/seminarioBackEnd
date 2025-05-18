@@ -157,7 +157,7 @@ class ProductManager {
 
     deleteImages (thumbnails) {
         thumbnails.forEach((thumb) => {
-            const filePath = process.cwd() + `/src/public/images/${thumb}`
+            const filePath = process.cwd() + `/src/public/images/products/${thumb}`
             fs.unlink(filePath, (err) => {
                 if (err) {
                     console.error(`Error al eliminar la imagen ${thumb}:`, err.message);
