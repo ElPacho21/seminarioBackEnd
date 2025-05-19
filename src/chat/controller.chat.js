@@ -30,7 +30,7 @@ class ChatController extends CustomRouter {
 
         this.get('/public', ['PUBLIC'], async (req, res) => {
             try {
-                const chats = await chatDao.findByUserId("67d054c6da2eb54bfbde5eed");
+                const chats = await chatDao.findByAdminId("67aeb8c8183f4e79fe3714f7");
                 res.status(201).json({ status: 'success', payload: chats });
             } catch (error) {
                 console.error(error.message);
