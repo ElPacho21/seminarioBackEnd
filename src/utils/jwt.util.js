@@ -10,7 +10,8 @@ const generateToken = (user) => {
 }
 
 const verifyToken = (token) => {
-    return jwt.verify(token, PRIVATE_KEY)
+    const user = jwt.verify(token, PRIVATE_KEY)
+    return user
 }
 
 const generateTokenForPassword = (id) => {

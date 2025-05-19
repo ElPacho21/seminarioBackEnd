@@ -47,7 +47,7 @@ const socketio = (server) => {
         chats.map(async (chat) => {
           const messages = await Message.findByChatId(chat._id);
           return {
-            clientNickName: "admin",
+            clientNickName: chat.admin.nickName,
             chatID: chat._id,
             messages
           };

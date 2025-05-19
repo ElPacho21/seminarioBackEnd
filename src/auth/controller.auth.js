@@ -140,14 +140,28 @@ class AuthController extends CustomRouter {
       }
     });
 
-    this.get("/current", ["CLIENT", "ADMIN"], (req, res) => {
+    this.get("/current", ["CLIENT", "ADMIN"], async (req, res) => {
       const token = req.cookies.authToken;
+      console.log("token: ", token)
       if (!token) {
         return res.status(401).json({ error: "Invalid token" });
       }
       try {
         const user = verifyToken(token);
-        res.json(user);
+        console.log("User desde front: ", user)
+        const {_id, firstName, lastName, email, nickName, role, cart, avatar, country} = await userDao.findById(user.id)
+        //console.log(completeUser)
+        res.json( {
+          id: _id,
+          firstName,
+          lastName,
+          email,
+          nickName,
+          role,
+          cartId: cart,
+          avatar,
+          country
+        });
       } catch (error) {
         return res.status(401).json({ error: "Invalid token" });
       }

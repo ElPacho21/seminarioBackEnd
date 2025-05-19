@@ -17,7 +17,7 @@ class ChatDao {
 
     async findByUserId(uid){
         try {
-            const chats = await Chat.find({ client: uid })
+            const chats = await Chat.find({ client: uid }).populate('client', 'nickName').populate("admin", "nickName");
             return chats
         } catch (error) {
             console.error('Error al buscar chats por usuario:', error.message)
@@ -27,7 +27,7 @@ class ChatDao {
 
     async findByAdminId(aid){
         try {
-            const chats = await Chat.find({ admin: aid }).populate('client', 'nickName');
+            const chats = await Chat.find({ admin: aid }).populate('client', 'nickName').populate("admin", "nickName");
             return chats
         } catch (error) {
             console.error('Error al buscar chats por usuario:', error.message)
